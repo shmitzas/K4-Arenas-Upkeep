@@ -4,6 +4,13 @@
   <a align="center">An all-in-one arena plugin for Counter-Strike 2 with ladder-style gameplay. Supports any map, 2v2/3v3 modes, weapon preferences and a developer API for custom round types.</a>
 </div>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
+  <img src="https://img.shields.io/github/downloads/Shmitzas/K4-Arenas-Upkeep/total?style=flat&logo=github&cacheSeconds=3600" alt="Downloads">
+  <img src="https://img.shields.io/github/stars/Shmitzas/K4-Arenas-Upkeep?style=flat&logo=github&cacheSeconds=3600" alt="Stars">
+  <img src="https://img.shields.io/github/license/Shmitzas/K4-Arenas-Upkeep" alt="License">
+</p>
+
 # Important notice!
 > [!IMPORTANT]  
 > [K4ryuu](https://github.com/K4ryuu) is the creator of this plugin.<br>
