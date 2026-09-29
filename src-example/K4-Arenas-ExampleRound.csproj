@@ -8,6 +8,8 @@
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>$(MSBuildThisFileName)</AssemblyName>
 		<OutputPath>$(MSBuildThisFileDirectory)build/</OutputPath>
+		<!-- Reference sample, not a shipped plugin: build it, never publish/release it. -->
+		<IsPublishable>false</IsPublishable>
 	</PropertyGroup>
 
 	<ItemGroup>
