@@ -39,6 +39,14 @@
 5. Configure `config.json` in the plugin folder
 6. Restart your server - database tables will be created automatically
 
+> **Server config:** do not run `mp_maxrounds 0` together with `mp_timelimit 0`. CS2 then declares
+> the match over the moment both teams have a player (`Game Over ... score 0:0` in the log): players
+> are frozen at spawn, game time stops and no round ever starts. This happens without any plugin
+> loaded. The `gameconfig.cfg` that the CounterStrikeSharp edition of K4-Arenas generates uses
+> `mp_maxrounds 0` and only works because it keeps `mp_timelimit 15`; if you reuse it and want no
+> time limit (a time limit ends the match and changelevel loses the arenas), set `mp_maxrounds 999`
+> like Valve's own `gamemode_workshop.cfg` does.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONFIGURATION -->
