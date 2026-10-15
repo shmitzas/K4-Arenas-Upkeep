@@ -131,13 +131,22 @@ public sealed partial class Plugin
 		public int GetPlayerCountByState(PlayerState state) =>
 			_players.Values.Count(p => p.IsValid && p.State == state);
 
-		/// <summary>Resets all players to waiting (call on map change)</summary>
+		/// <summary>Resets all players to waiting and forgets the ones that left (call on map change)</summary>
 		public void ClearAllArenaAssignments()
 		{
-			foreach (var player in _players.Values)
+			foreach (var (slot, player) in _players)
 			{
 				if (player.IsValid)
+				{
 					player.SetWaiting();
+					continue;
+				}
+
+				// Gone since the last map but still tracked: CS2 kicks every bot on a map change and
+				// the disconnect handler doesn't remove it. Keeping the record would hand its stale
+				// InArena state to whoever takes the slot next, so the new map's bot would never be paired.
+				_players.TryRemove(slot, out _);
+				_waitingQueue.Remove(slot);
 			}
 		}
 
