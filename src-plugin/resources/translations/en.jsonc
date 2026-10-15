@@ -8,6 +8,8 @@
   "k4.general.warmup": "WARMUP",
   "k4.general.random": "Random",
   "k4.general.unknown": "Unknown",
+  "k4.general.hit": "{0} hit",
+  "k4.general.hits": "{0} hits",
 
   "k4.chat.queue_added": "[silver]You have been added to the queue. Position: [lime]{0}[silver].",
   "k4.chat.queue_not_in_queue": "[silver]You are not in the queue.",
@@ -20,6 +22,7 @@
   "k4.chat.arena_roundstart_html": "<div class=\"fontSize-l\" style=\"text-align: center; padding: 10px;\"><font color=\"#C0C0C0\">Arena</font><br><font color=\"#FFA500\" class=\"fontSize-xl\">{0}</font><br><font color=\"#C0C0C0\">Round Type</font><br><font color=\"#FFA500\" class=\"fontSize-xl\">{1}</font><br><font color=\"#C0C0C0\" class=\"fontSize-m\">{2}</font></div>",
   "k4.chat.arena_commands": "[silver]Change preferences: [lime]!{0}[silver] and [lime]!{1}[silver].",
   "k4.chat.arena_afk": "[silver]Go AFK: [lime]!{0}[silver].",
+  "k4.chat.damage_report": "[silver]vs [lime]{0}[silver]: dealt [lime]{1}[silver] in {2}, took [lightred]{3}[silver] in {4}.",
 
   "k4.chat.afk_reminder": "[lightred]You are still AFK. Use [gold]!{0} [lightred]to disable.",
   "k4.chat.afk_enabled": "[silver]AFK enabled. Use [gold]!{0} [silver]to disable.",

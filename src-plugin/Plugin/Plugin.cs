@@ -139,6 +139,7 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 		Core.GameEvent.HookPost<EventPlayerSpawn>(OnPlayerSpawn);
 		Core.GameEvent.HookPost<EventPlayerDeath>(OnPlayerDeath);
 		Core.GameEvent.HookPre<EventPlayerTeam>(OnPlayerTeam);
+		Core.GameEvent.HookPost<EventPlayerHurt>(OnPlayerHurtTally);
 
 		// Block MVP event
 		Core.GameEvent.HookPre<EventRoundMvp>(OnRoundMvp);
@@ -312,6 +313,8 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 
 	private HookResult OnRoundPrestart(EventRoundPrestart ev)
 	{
+		ResetDamageReport();
+
 		if (Core.EntitySystem.GetGameRules()?.WarmupPeriod == true)
 			return HookResult.Continue;
 
@@ -368,6 +371,7 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 			}
 		}
 
+		SendRemainingDamageReports();
 		return HookResult.Continue;
 	}
 
@@ -413,6 +417,16 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 
 	private HookResult OnPlayerDeath(EventPlayerDeath ev)
 	{
+		var victim = ev.UserIdPlayer;
+		var killer = ev.AttackerPlayer;
+		Core.Scheduler.NextTick(() =>
+		{
+			if (victim?.IsValid == true)
+				SendDamageReport(victim);
+			if (killer?.IsValid == true && killer.Slot != victim?.Slot)
+				SendDamageReport(killer, victim);
+		});
+
 		Core.Scheduler.DelayBySeconds(1f, TerminateRoundIfPossible);
 		return HookResult.Continue;
 	}
