@@ -54,6 +54,11 @@ public static class MigrationRunner
 			case SqliteConnection:
 				rb.AddSQLite();
 				break;
+			// SwiftlyS2 hands out System.Data.SQLite's SQLiteConnection for sqlite:// connections,
+			// which the Microsoft.Data.Sqlite case above does not match.
+			case IDbConnection other when other.GetType().Name == "SQLiteConnection":
+				rb.AddSQLite();
+				break;
 			default:
 				throw new NotSupportedException($"Unsupported database connection type: {dbConnection.GetType().Name}");
 		}
