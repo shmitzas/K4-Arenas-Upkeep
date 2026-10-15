@@ -386,6 +386,16 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 				if (!player.IsValid || arenaPlayer == null)
 					return;
 
+				// Paired since the spawn: when the first player joins an empty server, CS2 adds a
+				// bot that spawns, and Warmup_End pairs it in the same tick. Moving it to spectator
+				// now would leave its opponent alone in the arena for the whole round.
+				if (arenaPlayer.CurrentArena != null)
+				{
+					if (arenaPlayer.PendingSetupCts == null)
+						_arenaManager.SetupSpawnedPlayer(player);
+					return;
+				}
+
 				if (player.Controller?.Team > Team.Spectator)
 				{
 					arenaPlayer.PlayerIsSafe = true;
