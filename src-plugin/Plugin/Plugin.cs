@@ -464,6 +464,7 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 			else if (oldTeam == Team.Spectator && newTeam > Team.Spectator && arenaPlayer.IsAfk)
 			{
 				arenaPlayer.SetWaiting();
+				_playerManager.EnqueueWaiting(arenaPlayer);
 				player.SendChat($"{localizer["k4.general.prefix"]} {localizer["k4.chat.afk_disabled"]}");
 				UpdatePlayerClantag(arenaPlayer);
 			}
@@ -685,6 +686,8 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 		switch (arenaPlayer.State)
 		{
 			case PlayerState.Waiting:
+				// A waiting player missing from the queue would never be assigned.
+				_playerManager.EnqueueWaiting(arenaPlayer);
 				var position = _arenaManager.GetQueuePosition(arenaPlayer);
 				if (position > 0)
 				{
@@ -729,7 +732,10 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 		var localizer = Core.Translation.GetPlayerLocalizer(player);
 		if (arenaPlayer.IsAfk)
 		{
+			// The round-end rebuild leaves AFK players out of the queue, and
+			// assignment only reads the queue, so they must be put back here.
 			arenaPlayer.SetWaiting();
+			_playerManager.EnqueueWaiting(arenaPlayer);
 			player.SendChat($"{localizer["k4.general.prefix"]} {localizer["k4.chat.afk_disabled"]}");
 			UpdatePlayerClantag(arenaPlayer);
 		}
