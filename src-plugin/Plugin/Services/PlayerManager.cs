@@ -136,7 +136,8 @@ public sealed partial class Plugin
 		{
 			foreach (var player in _players.Values)
 			{
-				if (player.IsValid)
+				// AFK players chose to sit out, so a map change keeps them in spectator.
+				if (player.IsValid && !player.IsAfk)
 				{
 					player.SetWaiting();
 					// Assignment only reads the queue, so waiting players must be in it.
