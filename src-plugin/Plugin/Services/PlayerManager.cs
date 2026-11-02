@@ -137,7 +137,11 @@ public sealed partial class Plugin
 			foreach (var player in _players.Values)
 			{
 				if (player.IsValid)
+				{
 					player.SetWaiting();
+					// Assignment only reads the queue, so waiting players must be in it.
+					EnqueueWaiting(player);
+				}
 			}
 		}
 

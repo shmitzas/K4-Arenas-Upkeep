@@ -457,6 +457,8 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 			var localizer = Core.Translation.GetPlayerLocalizer(player);
 			if (oldTeam > Team.Spectator && newTeam == Team.Spectator && !arenaPlayer.IsAfk)
 			{
+				// Leave the arena roster before SetAfk clears CurrentArena.
+				_arenaManager.RemovePlayerFromArena(player);
 				arenaPlayer.SetAfk();
 				player.SendChat($"{localizer["k4.general.prefix"]} {localizer["k4.chat.afk_enabled", Config.CurrentValue.Commands.AfkCommands.FirstOrDefault() ?? "afk"]}");
 				UpdatePlayerClantag(arenaPlayer);
@@ -741,6 +743,9 @@ public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 		}
 		else
 		{
+			// Leave the arena roster first: SetAfk clears CurrentArena, and a stale
+			// roster entry would make warmup pair the player with themselves later.
+			_arenaManager.RemovePlayerFromArena(player);
 			arenaPlayer.SetAfk();
 			player.ChangeTeam(Team.Spectator);
 			player.SendChat($"{localizer["k4.general.prefix"]} {localizer["k4.chat.afk_enabled", Config.CurrentValue.Commands.AfkCommands.FirstOrDefault() ?? "afk"]}");
